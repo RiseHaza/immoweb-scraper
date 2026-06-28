@@ -1,267 +1,313 @@
-[Immoweb Scraper](https://apify.com/haketa/immoweb-scraper?fpr=data)
+[Immoweb Scraper](https://apify.com/memo23/immoweb-scraper?fpr=data)
 
-# 🏠 Immoweb.be Belgium Property Scraper
+# Immoweb.be Scraper
 
-Extract property listings from **[Immoweb.be](https://www.immoweb.be)** — Belgium's #1 real estate platform with 200,000+ active listings. Covers houses, apartments, land and commercial properties across **Flanders**, **Wallonia** and **Brussels**. Sale and rent.
+![Immoweb Scraper - How It Works](https://images.apifyusercontent.com/GUUivrg1LxBuKYuX42iOoRmdMKBii0NWYWoSqH8tVD0/w:1800/cb:1/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL211aGFtZWQtZGlkb3ZpYy9tdWhhbWVkLWRpZG92aWMuZ2l0aHViLmlvL21haW4vYXNzZXRzL2hvdy1pdC13b3Jrcy1pbW1vd2ViLWdlbmVyYXRlZC5wbmc.webp)
 
-[![Apify Actor](https://img.shields.io/badge/Apify-Actor-blue)](https://apify.com/)
+**Unlock the Full Power of Immoweb.be Real Estate Data** - The only scraper you need to track, analyze, and understand property listings on Immoweb.be with enterprise-grade reliability and precision. Whether you're monitoring property trends, tracking specific real estate investments, or conducting housing market research, our scraper delivers comprehensive, real-time insights while saving you time and resources.
 
----
+*"From houses and apartments to office blocks and investment projects, we turn Immoweb's real estate data into your competitive advantage."*
 
-## ⚡ What It Does
+## Overview
 
-Scrapes Immoweb.be search result pages and optionally fetches individual property profiles. Extracts price, rooms, area, EPC energy score, location, agency info and 70+ fields from detail pages. Includes Belgium-specific data: **PEB/EPC energy certificate**, **flood zone risk** and **4-digit postcode** with automatic region/province mapping.
+The Immoweb.be Scraper is your go-to tool for extracting property posting data from Immoweb.be. Ideal for real estate agents, investors, housing market analysts, and property seekers, it tracks property details, pricing information, and agency profiles across the Belgian real estate sector. With easy setup and multiple export formats (JSON, CSV), it's perfect for anyone looking to gather comprehensive housing market data from Immoweb.be.
 
-**Default run:** Scrapes Belgian properties for sale, completes in under 3 minutes, produces a non-empty dataset.
+## Supported Inputs
 
----
+The Immoweb scraper is highly flexible and accepts multiple starting points. You can mix and match these in your `startUrls` array:
 
-## 🔧 How It Works
+**✅ Supported:**
 
-Immoweb uses Cloudflare protection — this actor uses real Chrome via Playwright with Belgian residential proxy:
+- **Search Pages**: `https://www.immoweb.be/en/search/house/for-sale?countries=BE&page=1`
+- **Filtered Searches**: `https://www.immoweb.be/en/search-3-rooms/house/for-rent/bruxelles/district`
+- **Direct Listings**: `https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580`
+- **Project Listings**: `https://www.immoweb.be/en/classified/house_group/for-sale/schelle/2627/21513401`
 
-1. 🚀 Launches Chrome browser with 🇧🇪 Belgian residential proxy
-2. 🍪 Accepts cookie consent on homepage
-3. 🔍 Navigates to search results pages
-4. 📊 Extracts structured JSON from `__NEXT_DATA__` or DOM
-5. 📄 Optionally fetches detail pages for `window.classified` rich data
-6. 🗺️ Maps postcodes to region (Flanders/Wallonia/Brussels) and province
+**❌ Not Supported:**
 
----
+- User account dashboards or saved favorites (`/my-immoweb/`)
+- URLs outside of the `immoweb.be` domain.
 
-## 🚀 Quick Start
+## What does Immoweb.be Scraper do?
 
-### Default Input (works out of the box)
+The Immoweb.be Scraper is a powerful tool that enables you to:
+
+### Comprehensive Data Collection
+
+- **Property Listings**
+
+- Extract complete property details and requirements
+- Scrape pricing information and monthly costs
+- Gather comprehensive property descriptions and spatial dimensions
+- Analyze property categories, energy scores (EPC), and amenities
+- Access location coordinates and building conditions
+- **Agency Data**
+
+- Scrape real estate agency profiles with complete information
+- Extract agency contact details, phone numbers, and websites
+- Gather company size and industry information
+- Access company location and remote work policies
+
+### Advanced Scraping Capabilities
+
+- **Pagination Handling**: Automatically navigates through all search result pages
+- **Efficient Processing**: Bypass Cloudflare DataDome protections natively using HTML extraction
+- **Deep Data Extraction**: Extracts and flattens heavily nested JSON states automatically
+- **Comprehensive Output**: Captures everything from EPC values to exact GPS coordinates
+
+### Flexible Scraping Options
+
+- **Search Results**: Scrape all property postings from search results (e.g., `https://www.immoweb.be/en/search/house/for-sale`)
+- **Individual Listings**: Target specific property postings using direct URLs (e.g., `https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580`)
+- **Flexible Input**: Supports multiple input formats:
+
+- Search result URLs (e.g., `https://www.immoweb.be/en/search/house/for-sale`)
+- Direct property posting URLs (e.g., `https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580`)
+- Custom search criteria with advanced filters
+- **Automatic Pagination**: Handles multi-page results automatically across all search types
+- **Efficient Processing**: Concurrent scraping with configurable concurrency settings
+- **Reliable Performance**: Built-in retry mechanisms and proxy support
+- **Structured Data Export**: Download property listing data in JSON or CSV format for analysis
+
+## Why use Immoweb.be Scraper?
+
+- **Real Estate Monitoring**: Keep track of new properties, price adjustments, and market supply.
+- **Investor Insights**: Discover under-priced properties, track yield opportunities, and build data models.
+- **Competitor Tracking**: Real estate agencies can seamlessly monitor rival portfolios and sales speeds.
+- **Save Time**: Automate manual property searching and data entry tasks.
+
+## How it works
+
+1. Provide search URLs (e.g., `https://www.immoweb.be/en/search/house/for-sale`) or direct listing URLs.
+2. The scraper bypasses protections and paginates through the results automatically.
+3. For each listing, it extracts the full React state object (`window.classified`).
+4. The nested JSON is instantly flattened and delivered to you as CSV, Excel, or JSON.
+
+## How to Use
+
+### Scraping Property Listings
+
+To scrape property listings:
+
+1. **Set Up**: Ensure you have an Apify account and access to the Apify platform.
+2. **Configure Input**: Provide the search URL or specific property posting URL:
+
+- `https://www.immoweb.be/en/search/house/for-sale`
+- `https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580`
+3. **Adjust Settings**: Configure options like max items, concurrency, retries, and proxy settings as needed.
+4. **Run the Scraper**: Execute the scraper on the Apify platform.
+5. **Data Collection**: The scraper will output all available property listing data.
+
+## Input Configuration
+
+Here's an example of how to set up the input for the Immoweb.be Scraper:
 
 ```
 {
-  "startUrls": [
-    { "url": "https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&page=1&orderBy=relevance" }
+    "startUrls": [
+        "https://www.immoweb.be/en/search/house/for-sale",
+        "https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580"
+    ],
+    "maxItems": 20,
+    "monitoringMode": false,
+    "maxConcurrency": 10,
+    "minConcurrency": 1,
+    "maxRequestRetries": 3,
+    "proxy": {
+        "useApifyProxy": true
+    }
+}
+```
+
+The actor stores its results in the default dataset. Below is a sample output object. For a detailed breakdown of every field, see the Output Fields Explanation section below.
+
+```
+{
+  "id": 21064580,
+  "url": "https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580",
+  "original_request_url": "https://www.immoweb.be/en/classified/office-block/for-rent/houthalen-helchteren/3530/21064580",
+  "customers": [
+    {
+      "id": 1248059,
+      "type": "AGENCY",
+      "email": "info@agency.be",
+      "logoUrl": "https://media.immowebstatic.be/.../logo.jpg",
+      "phoneNumber": "+3211800000",
+      "name": "Vestio",
+      "website": "http://www.vestio.com",
+      "location": {
+        "country": "Belgium",
+        "province": "Limburg",
+        "locality": "Hasselt",
+        "postalCode": "3500",
+        "street": "20 Kolonel Dusartplein"
+      },
+      "ipiNo": "206808",
+      "isOwner": true
+    }
   ],
-  "maxListings": 50,
-  "maxPages": 3
+  "media_pictures": [
+    {
+      "smallUrl": "https://media-resize.immowebstatic.be/.../small.jpg",
+      "largeUrl": "https://media-resize.immowebstatic.be/.../large.jpg"
+    }
+  ],
+  "property_type": "OFFICE",
+  "property_subtype": "OFFICE_BLOCK",
+  "property_title": "Flexibele kantoorruimtes in bedrijvencentrum",
+  "property_description": "In het innovatieve bedrijvencentrum Greenville...",
+  "property_location_country": "Belgium",
+  "property_location_region": "Flanders",
+  "property_location_province": "Limburg",
+  "property_location_locality": "Houthalen-Helchteren",
+  "property_location_postalCode": "3530",
+  "property_location_street": "Centrum Zuid",
+  "property_location_latitude": 51.0256269,
+  "property_location_longitude": 5.3723637,
+  "property_hasLift": true,
+  "property_constructionPermit_isObtained": true,
+  "transaction_type": "FOR_RENT",
+  "transaction_subtype": "RENT_AND_BUY",
+  "price_mainValue": 34,
+  "price_type": "PRICE",
+  "publication_creationDate": "2025-10-03T10:04:27.998Z",
+  "publication_lastModificationDate": "2026-04-13T18:38:28.747Z"
 }
 ```
 
-### 🔍 Filter Mode (no URL needed)
+## Output Fields Explanation
 
-```
-{
-  "propertyType": "apartment",
-  "transactionType": "for-rent",
-  "location": "brussels/district",
-  "minPrice": 800,
-  "maxPrice": 1500,
-  "minBedrooms": 1,
-  "scrapeDetails": true,
-  "maxListings": 100,
-  "maxPages": 5
-}
-```
+This section provides a detailed breakdown of all key fields in the JSON output from the Immoweb.be Scraper. The output is organized into flattened key-value pairs for easy CSV/Excel export.
 
----
+### Core Listing Details
 
-## 📋 Input Parameters
+- `id` (Number): Internal unique identifier for the property listing on Immoweb.
+- `url` (String): The direct URL to the property listing.
+- `original_request_url` (String): The original URL that led to the discovery of this property.
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `startUrls` | array | prefilled | 🔗 Immoweb search URLs — paste any search URL |
-| `propertyType` | string | `house-and-apartment` | 🏘️ `house`, `apartment`, `land`, `office`, `commercial`, `garage` |
-| `transactionType` | string | `for-sale` | 💰 `for-sale` or `for-rent` |
-| `location` | string | `""` | 📍 City/district/province slug (see below) |
-| `language` | string | `en` | 🌐 `en` (English), `fr` (Français), `nl` (Nederlands) |
-| `minPrice` | integer | `0` | 💶 Min price in EUR |
-| `maxPrice` | integer | `0` | 💶 Max price in EUR |
-| `minBedrooms` | integer | `0` | 🛏️ Min number of bedrooms |
-| `scrapeDetails` | boolean | `false` | 📄 Fetch 70+ fields from detail pages |
-| `maxListings` | integer | `50` | 🔢 Total listings cap |
-| `maxPages` | integer | `3` | 📑 Max search result pages (~30 listings each) |
-| `proxyConfiguration` | object | BE residential | 🔒 Belgian residential proxy (required) |
-| `requestDelay` | integer (ms) | `2000` | ⏱️ Delay between page loads |
+### Agency / Customer Details
 
----
+- `customers` (Array): Contains details about the real estate agency or seller.
 
-## 📍 Location Slugs
+- `type` (String): Always "AGENCY" for real estate agencies.
+- `email` (String): Agency contact email.
+- `logoUrl` (String): Direct URL to the agency's logo.
+- `phoneNumber` (String): Landline contact number.
+- `name` (String): Name of the real estate agency.
+- `website` (String): Agency's official website URL.
+- `location` (Object): Physical location details of the agency (country, province, locality, postalCode, street).
+- `ipiNo` (String): The agency's BIV/IPI real estate license number.
+- `isOwner` (Boolean): If the agency is the direct owner of the listing.
 
-### 🏙️ Major Cities
+### Media & Pictures
 
-| Slug | City | Region |
-| --- | --- | --- |
-| `brussels/district` | Brussels | 🇧🇪 Brussels |
-| `antwerpen/province` | Antwerp area | 🟡 Flanders |
-| `ghent/city` | Ghent | 🟡 Flanders |
-| `bruges/city` | Bruges | 🟡 Flanders |
-| `leuven/city` | Leuven | 🟡 Flanders |
-| `liege/city` | Liège | 🔴 Wallonia |
-| `namur/city` | Namur | 🔴 Wallonia |
-| `mons/city` | Mons | 🔴 Wallonia |
-| `charleroi/city` | Charleroi | 🔴 Wallonia |
+- `media_pictures` (Array): List of all property images, containing objects with `smallUrl`, `mediumUrl`, `largeUrl`, and `extralargeUrl` for different resolutions.
+- `media_virtualTourUrl` (String|null): URL to a 3D/virtual tour of the property.
+- `media_floorPlans` (Array|null): Floor plan documents/images.
+- `media_documents` (Array): Any attached documents (e.g., PDFs, EPC certificates).
 
-### 🗺️ Regions & Provinces
+### Property Details
 
-| Slug | Coverage |
-| --- | --- |
-| `brussels/district` | 19 communes of Brussels Capital Region |
-| `antwerpen/province` | Antwerp province |
-| `oost-vlaanderen/province` | East Flanders (Ghent) |
-| `west-vlaanderen/province` | West Flanders (Bruges) |
-| `vlaams-brabant/province` | Flemish Brabant |
-| `limburg/province` | Limburg |
-| `liege/province` | Liège province |
-| `hainaut/province` | Hainaut |
-| `namur/province` | Namur province |
-| `luxembourg/province` | Luxembourg province |
-| `brabant-wallon/province` | Walloon Brabant |
+- `property_type` (String): Main property type (e.g., "HOUSE", "APARTMENT", "OFFICE").
+- `property_subtype` (String): Specific property subtype (e.g., "HOUSE_GROUP", "OFFICE_BLOCK").
+- `property_title` (String): The main listing title in the primary language.
+- `property_description` (String): Full property description text.
+- `property_bedroomCount` (Number|null): Total number of bedrooms.
+- `property_bathroomCount` (Number|null): Total number of bathrooms.
+- `property_netHabitableSurface` (Number|null): Total habitable living space in square meters.
+- `property_roomCount` (Number|null): Total number of rooms.
+- `property_monthlyCosts` (Number): Monthly shared/syndic costs.
 
----
+### Property Location
 
-## 📦 Output
+- `property_location_country` (String): Country (e.g., "Belgium").
+- `property_location_region` (String): Region (e.g., "Flanders", "Wallonia", "Brussels").
+- `property_location_province` (String): Province name.
+- `property_location_district` (String): District name.
+- `property_location_locality` (String): City / Town name.
+- `property_location_postalCode` (String): ZIP / Postal code.
+- `property_location_street` (String): Street name.
+- `property_location_number` (String): Street number.
+- `property_location_latitude` (Number): Geographic latitude coordinate.
+- `property_location_longitude` (Number): Geographic longitude coordinate.
 
-### 🔍 Search Mode (`scrapeDetails: false`)
+### Building & Construction
 
-Quick extraction from search result cards (~30 per page):
+- `property_building_condition` (String|null): State of the building (e.g., "GOOD", "AS_NEW", "TO_RENOVATE").
+- `property_building_constructionYear` (Number|null): Year the property was built.
+- `property_building_facadeCount` (Number|null): Number of facades/free-standing sides.
+- `property_building_floorCount` (Number|null): Total number of floors in the building.
+- `property_hasLift` (Boolean|null): If the building has an elevator.
+- `property_constructionPermit_isObtained` (Boolean|null): If proper construction permits exist.
 
-```
-{
-  "listingId": "12345678",
-  "listingType": "for-sale",
-  "propertyType": "apartment",
-  "price": 485000,
-  "currency": "EUR",
-  "bedrooms": 2,
-  "livingArea": 95,
-  "postcode": "1040",
-  "city": "Brussels",
-  "province": "Brussels",
-  "region": "Brussels",
-  "epcScore": "B",
-  "agencyName": "Color Properties",
-  "listingUrl": "https://www.immoweb.be/en/classified/apartment/for-sale/brussels/1040/12345678",
-  "scrapedAt": "2026-05-05T09:00:00Z"
-}
-```
+### Features & Amenities
 
-### 📄 Detail Mode (`scrapeDetails: true`)
+- `property_hasGarden` (Boolean|null): If the property has a garden.
+- `property_gardenSurface` (Number|null): Size of the garden in square meters.
+- `property_hasTerrace` (Boolean|null): If the property has a terrace.
+- `property_terraceSurface` (Number|null): Size of the terrace in square meters.
+- `property_hasSwimmingPool` (Boolean|null): If the property has a pool.
+- `property_hasAirConditioning` (Boolean|null): If air conditioning is installed.
+- `property_kitchen_type` (String|null): Type of kitchen (e.g., "HYPER_EQUIPPED", "INSTALLED").
+- `property_parkingCountIndoor` (Number|null): Number of indoor parking spaces.
+- `property_parkingCountOutdoor` (Number|null): Number of outdoor parking spaces.
 
-Rich data from individual property pages (70+ fields):
+### Energy & EPC
 
-```
-{
-  "listingId": "12345678",
-  "listingType": "for-sale",
-  "propertyType": "apartment",
-  "title": "Penthouse with terrace near Montgomery",
-  "price": 485000,
-  "currency": "EUR",
-  "bedrooms": 2,
-  "bathrooms": 1,
-  "livingArea": 95,
-  "landSurface": null,
-  "postcode": "1040",
-  "city": "Brussels",
-  "province": "Brussels",
-  "region": "Brussels",
-  "latitude": 50.8412,
-  "longitude": 4.3954,
-  "epcScore": "B",
-  "epcValue": 142,
-  "heatingType": "gas",
-  "buildYear": 2019,
-  "condition": "as new",
-  "facade": 2,
-  "floodZone": false,
-  "description": "Magnificent penthouse with panoramic terrace...",
-  "agencyName": "Color Properties",
-  "agencyPhone": "+32 2 345 6789",
-  "agencyEmail": "info@colorproperties.be",
-  "viewCount": 847,
-  "bookmarkCount": 34,
-  "daysOnMarket": 12,
-  "images": ["https://media.immowebstatic.be/..."],
-  "scrapedAt": "2026-05-05T09:00:00Z"
-}
-```
+- `property_energy_epcScore` (String|null): The official EPC rating letter (e.g., "A", "B", "C").
+- `property_energy_heatingType` (String|null): Type of heating (e.g., "GAS", "ELECTRIC", "PELLET").
+- `property_energy_primaryEnergyConsumptionPerSqm` (Number|null): Energy consumption (kWh/m²/year).
+
+### Transaction & Pricing
+
+- `transaction_type` (String): Type of transaction (e.g., "FOR_SALE", "FOR_RENT").
+- `transaction_subtype` (String): Subtype of transaction.
+- `price_mainValue` (Number): The main asking price in Euros.
+- `price_type` (String): The price type (e.g., "PRICE").
+- `flags_isNewlyBuilt` (Boolean): If the property is a new construction.
+- `flags_isPublicSale` (Boolean): If the property is being sold at a public auction.
+- `flags_isUnderOption` (Boolean): If the property is currently under option/offer.
+
+### Publication & Statistics
+
+- `publication_creationDate` (ISO 8601): When the listing was first published on Immoweb.
+- `publication_lastModificationDate` (ISO 8601): When the listing was last updated.
+- `statistics_viewCount` (Number|null): Number of times the listing has been viewed.
+- `statistics_bookmarkCount` (Number|null): Number of times the listing was saved/bookmarked.
 
 ---
 
-## 🇧🇪 Belgium-Specific Data
+## FAQ
 
-### ⚡ PEB/EPC Energy Score
+**How does this bypass Immoweb's DataDome protections?**
+Immoweb's REST API is aggressively guarded by Cloudflare's DataDome. To bypass this, our scraper extracts the exact same data directly from the frontend React state (`window.classified`) rendered on the HTML page. This yields a 100% data match with a significantly lower block rate.
 
-Belgium's mandatory energy performance certificate. Required for all property sales since 2008.
+**What does the flattened output look like?**
+Nested properties like `property: { location: { street: "Main St" } }` are automatically flattened into single-level columns: `property_location_street: "Main St"`. This prevents messy JSON objects from appearing in your CSV or Excel exports. Note that arrays (like `media_pictures`) remain as lists.
 
-| Score | Rating | kWh/m²/year |
-| --- | --- | --- |
-| A++ | 🟢 Excellent | ≤ 0 (net zero) |
-| A+ | 🟢 Very good | 0 – 45 |
-| A | 🟢 Good | 45 – 85 |
-| B | 🟡 Above average | 85 – 170 |
-| C | 🟡 Average | 170 – 255 |
-| D | 🟠 Below average | 255 – 340 |
-| E | 🔴 Poor | 340 – 425 |
-| F | 🔴 Very poor | 425 – 510 |
-| G | ⚫ Worst | > 510 |
+**Can I mix search URLs and direct listings?**
+Yes! You can put a mix of `/search/` URLs and `/classified/` URLs into the `startUrls` array. The scraper will automatically detect the URL type and process it appropriately.
 
-Low EPC = renovation opportunity. High EPC = premium pricing.
-
-### 🌊 Flood Zone
-
-Since the 2021 Liège floods, flood zone information is mandatory in Belgian property sales. The `floodZone` field indicates whether the property is in a designated flood risk area.
-
-### 📮 Postcode → Region Mapping
-
-Belgian 4-digit postcodes are automatically mapped to region and province:
-
-| Postcode Range | Region | Province |
-| --- | --- | --- |
-| 1000 – 1299 | 🇧🇪 Brussels | Brussels |
-| 1500 – 1999 | 🟡 Flanders | Flemish Brabant |
-| 2000 – 2999 | 🟡 Flanders | Antwerp |
-| 3000 – 3499 | 🟡 Flanders | Flemish Brabant |
-| 3500 – 3999 | 🟡 Flanders | Limburg |
-| 4000 – 4999 | 🔴 Wallonia | Liège |
-| 8000 – 8999 | 🟡 Flanders | West Flanders |
-| 9000 – 9999 | 🟡 Flanders | East Flanders |
+**Why am I still getting blocked?**
+If you're scraping thousands of pages in a single run, it is highly recommended to enable Apify's Residential Proxies in your configuration. Datacenter proxies are frequently flagged by Belgian real estate sites.
 
 ---
 
-## 🎯 Use Cases
+## Explore More Scrapers
 
-- 🏡 **Property investment** — analyze rental yields, price trends by postcode
-- 📊 **Automated valuation (AVM)** — EPC + m² + location data for valuation models
-- 🏢 **Agency competitor analysis** — track new listings, pricing, market share
-- 🏦 **Mortgage & insurance** — regional market data, flood risk assessment
-- 🌍 **Expat relocation** — Brussels housing market monitoring for EU workers
-- ⚡ **Energy renovation** — identify low-EPC properties as renovation opportunities
+If you found this Apify Immoweb.be Scraper useful, be sure to check out our other powerful scrapers and actors at [memo23's Apify profile](https://apify.com/memo23). We offer a wide range of tools to enhance your web scraping and automation needs across various platforms and use cases.
 
----
+## Support
 
-## ⚙️ Technical Notes
+- For issues or feature requests, please use the [Issues](https://console.apify.com/actors/7Fw4OYjfMapM6l49D/issues) section of this actor.
+- If you need customization or have questions, feel free to contact the author:
 
-| Feature | Detail |
-| --- | --- |
-| 🔗 **Engine** | Playwright Chrome (real browser for JS rendering) |
-| 🔒 **Proxy** | Belgian residential proxy **required** (Cloudflare blocks datacenter IPs) |
-| 📊 **Data source** | `__NEXT_DATA__` JSON + `window.classified` object |
-| 📄 **Pagination** | `?page=N`, ~30 results per page |
-| 🌐 **Languages** | English (`en`), French (`fr`), Dutch (`nl`) |
-| 🗺️ **Auto-mapping** | Postcode → region + province |
+- Author's website: [https://muhamed-didovic.github.io/](https://muhamed-didovic.github.io/)
+- Email: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
 
----
+## Additional Services
 
-## 💸 Cost & Performance
-
-| Mode | Speed | CU per 100 listings |
-| --- | --- | --- |
-| 🚀 Search only | ~20-30/min | ~0.03 |
-| 📄 With details | ~3-5/min | ~0.08 |
-
-Belgian residential proxy adds ~$0.003/request to compute cost.
-
----
-
-## 📜 Changelog
-
-| Version | Date | Notes |
-| --- | --- | --- |
-| 1.0.0 | 2026-05-05 | 🎉 Initial release — Playwright + BE proxy, EPC/flood data, postcode mapping, 3 languages |
+- Request customization or whole dataset: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
+- If you need anything else scraped, or this actor customized, email: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
+- For API services of this scraper (no Apify fee, just usage fee for the API), contact: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
+- Email: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
